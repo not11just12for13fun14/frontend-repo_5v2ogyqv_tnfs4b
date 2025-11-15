@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Glass Sidebar</title>
+  <!--
+    Learn-by-reading notes:
+    - This page is pure HTML + CSS (no JavaScript)
+    - The “glass” look uses backdrop-filter and transparency
+    - The layout is a simple 2-column: sidebar (fixed width) + main content (fills rest)
+  -->
+  <style>
+    /* 1) Reset and base styles */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: #0f172a; /* slate-900 */
+      /* Nice gradient background so the glass effect is visible */
+      background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 50%, #ec4899 100%);
+      background-attachment: fixed;
+    }
+
+    /* 2) Page layout: sidebar + content */
+    .page {
+      display: grid;
+      grid-template-columns: 260px 1fr; /* sidebar width + main content */
+      min-height: 100vh;
+      gap: 24px; /* space between sidebar and content */
+      padding: 24px; /* space from page edges */
+    }
+
+    /* 3) Glass sidebar */
+    .sidebar {
+      /* Transparent white with a little border for the glass frame */
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      /* The blur makes it look like glass over the background */
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      /* Soft shadow for elevation */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      color: #ffffff;
+      padding: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      margin-bottom: 16px;
+    }
+    .brand-dot {
+      width: 12px; height: 12px; border-radius: 50%; background: #22d3ee; /* cyan-400 */
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.8);
+    }
+
+    .sidebar p.tip {
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.9);
+      margin: 0 0 16px 0;
+    }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+      margin: 16px 0 24px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .nav a {
+      display: block;
+      text-decoration: none;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 12px;
+      border-radius: 10px;
+      transition: background 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+    }
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+      margin: 12px 0 16px 0;
+      border: none;
+    }
+
+    .footer {
+      margin-top: auto;
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* 4) Main content card */
+    .content {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(15, 23, 42, 0.08); /* subtle border */
+      border-radius: 16px;
+      box-shadow: 0 8px 28px rgba(2, 6, 23, 0.12);
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .content h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+    }
+    .content p { margin: 0; line-height: 1.6; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .card {
+      background: white;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+    }
+    .card h3 { margin: 0 0 6px 0; font-size: 16px; }
+    .card p { font-size: 14px; color: #334155; }
+
+    /* 5) Make it responsive */
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 220px 1fr; }
+      .cards { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .page { grid-template-columns: 1fr; }
+      .sidebar { order: 2; }
+      .content { order: 1; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Glass Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>My Glass Sidebar</span>
+      </div>
+
+      <p class="tip">
+        Tip: Glassmorphism uses transparency + blur.
+        Try changing the rgba values and blur to see the effect.
+      </p>
+
+      <hr class="divider" />
+
+      <ul class="nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Articles</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+
+      <p class="footer">Made with pure HTML + CSS</p>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h1>Welcome!</h1>
+      <p>This is a simple layout with a glass sidebar and a clean content area. Read the CSS comments to learn how each piece works.</p>
+
+      <div class="cards">
+        <section class="card">
+          <h3>How the glass works</h3>
+          <p>
+            The sidebar has a semi-transparent background plus <code>backdrop-filter: blur()</code>.
+            The gradient page background shows through, creating a frosted glass look.
+          </p>
+        </section>
+        <section class="card">
+          <h3>Try edits</h3>
+          <p>
+            Change the blur amount, background opacity, or the gradient colors to see the effect change instantly.
+          </p>
+        </section>
+        <section class="card">
+          <h3>Responsive</h3>
+          <p>
+            Resize the window. On small screens, the layout stacks so it stays easy to read.
+          </p>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
